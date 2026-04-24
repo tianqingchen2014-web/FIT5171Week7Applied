@@ -7,10 +7,10 @@ import java.sql.SQLException;
 
 /**
  * @author Yuan-Fang Li
- * @author yqtian for version 2.0
- * @version $Id: $
+ * @author yqtian
  */
 public class UserHandler {
+
     private final UserDAO userDAO;
 
     public UserHandler(UserDAO userDAO) {
@@ -19,21 +19,25 @@ public class UserHandler {
 
     public boolean updatePassword(Long personId, String password) throws SQLException {
 
+        // 1. 获取用户
         User user = userDAO.findById(personId);
 
+        // 2. 用户不存在 → 抛异常（必须有 message）
         if (user == null) {
-            throw new SQLException(); 
+            throw new SQLException("User not found for id: " + personId);
         }
 
+        // 3. password 为 null → false
         if (password == null) {
             return false;
         }
 
+        // 4. 新旧密码一样 → false
         if (password.equals(user.getPassword())) {
             return false;
         }
 
+        // Phase 1 到这里结束（不要写 update！）
         return false;
     }
-
 }
