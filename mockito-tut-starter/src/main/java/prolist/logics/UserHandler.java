@@ -15,31 +15,24 @@ public class UserHandler {
 
     public boolean updatePassword(Long personId, String password) throws SQLException {
 
-        // 1. password null → false
-        if (password == null) {
-            return false;
-        }
+        // ⭐ 1. 先查 user（关键顺序）
+        User user = userDAO.load(personId);
 
-        User user;
-
-        // 2. DAO 抛异常 → 你也要抛
-        try {
-            user = userDAO.load(personId);
-        } catch (SQLException e) {
-            throw new SQLException("User not found");
-        }
-
-        // 3. user 为 null → 抛
+        // ⭐ 2. user 不存在 → 必须 throw（不管 password 是啥）
         if (user == null) {
             throw new SQLException("User not found");
         }
 
-        // 4. password 相同 → false
+        // ⭐ 3. 再判断 password
+        if (password == null) {
+            return false;
+        }
+
+        // ⭐ 4. 相同 password
         if (password.equals(user.getPassword())) {
             return false;
         }
 
-        // Phase 1
         return false;
     }
 }
