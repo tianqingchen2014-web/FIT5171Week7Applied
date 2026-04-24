@@ -19,21 +19,21 @@ public class UserHandler {
 
     public boolean updatePassword(Long personId, String password) throws SQLException {
 
-    User user = userDAO.findById(personId);
+        User user = userDAO.findById(personId);
 
-    if (user == null) {
-        throw new SQLException("User not found");
-    }
+        if (user == null) {
+            throw new SQLException(); 
+        }
 
-    if (password == null) {
+        if (password == null) {
+            return false;
+        }
+
+        if (password.equals(user.getPassword())) {
+            return false;
+        }
+
         return false;
     }
-
-    if (password.equals(user.getPassword())) {
-        return false;
-    }
-
-    return false;
-}
 
 }
